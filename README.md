@@ -6,3 +6,4 @@ Source for the videos found on my YouTube channel for Tauri Development. Videos 
 
 - Getting Started - [Video](https://youtu.be/y19gU_5fbtU) - [Branch](https://github.com/cameronadams777/youtube-tauri-tutorials)
 - Opening Dialog and Reading File Contents - [Video](https://youtu.be/87SbZs-phmA) - [Branch](https://github.com/cameronadams777/youtube-tauri-tutorials/tree/f/open-dialog)
+- Invoking Rust Functions from JavaScript - [Video](https://youtu.be/EHWbecNNCfg) - [Branch](https://github.com/cameronadams777/youtube-tauri-tutorials)
