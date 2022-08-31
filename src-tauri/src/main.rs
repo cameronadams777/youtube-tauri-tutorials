@@ -5,6 +5,12 @@
 
 fn main() {
     tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![double])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+#[tauri::command]
+fn double(num: u8) -> u8 {
+    return num * 2;
 }
