@@ -1,31 +1,38 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from "./components/HelloWorld.vue";
-</script>
-
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <textarea v-model="content" rows="20" class="content-area" />
 </template>
 
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
+import { appWindow } from "@tauri-apps/api/window";
+import { open } from "@tauri-apps/api/dialog";
+import { readTextFile } from "@tauri-apps/api/fs";
+
+const content = ref<string>("");
+
+onMounted(() => {
+  appWindow.listen("new-content", () => {
+    console.log("new-content event emitted");
+    content.value = "";
+  });
+  appWindow.listen("open-file", async () => {
+    try {
+      const filePath = await open({
+        title: "Select a Text File",
+        filters: [{ name: "Text", extensions: ["txt"] }],
+      });
+      if (!filePath) return;
+      const fileContent = await readTextFile(filePath as string, {});
+      content.value = fileContent;
+    } catch (error) {
+      console.error(error);
+    }
+  });
+});
+</script>
+
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.content-area {
+  width: 100%;
 }
 </style>
